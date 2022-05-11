@@ -1,30 +1,21 @@
-const express = require('express');
-const app = express();
-const path = require('path')
+const  db = require('./db/db')
+const PORT = process.env.PORT || 3000
+const app = require('./app')
+// const seed = require('../script/seed');
 
-const morgan = require('morgan');
-app.use(morgan('dev'));
-app.use(express.static(path.join(__dirname, './path/to/static/assets')));
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }))
+const init = async () => {
+  try {
+    if(process.env.SEED === 'true'){
+      await seed();
+    }
+    else {
+      await db.sync()
+    }
+    // start listening (and create a 'server' object representing our server)
+    app.listen(PORT, () => console.log(`Mixing it up on port ${PORT}`))
+  } catch (ex) {
+    console.log(ex)
+  }
+}
 
-app.use('/api', require('./api'));
-
-const port = process.env.PORT || 3000; 
-
-app.listen(port, function () {
-  console.log("Knock, knock");
-  console.log("Who's there?");
-  console.log(`Your server, listening on port ${port}`);
-});
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'))
-  })
-
-app.use(function (err, req, res, next) {
-    console.error(err);
-    console.error(err.stack);
-    res.status(err.status || 500).send(err.message || 'Internal server error.');
-  });
+init()
