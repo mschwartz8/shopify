@@ -20,7 +20,7 @@ app.listen(port, function () {
 });
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, './path/to/index.html'))
+  res.sendFile(path.join(__dirname, '../public/index.html'))
   })
 
 app.use(function (err, req, res, next) {
