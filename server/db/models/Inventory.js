@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const db = require('server/db/db');
+const db = require('../db');
 
 const Inventory = db.define('inventory', {
     name: {
