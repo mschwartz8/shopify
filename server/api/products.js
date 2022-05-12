@@ -3,7 +3,7 @@ const {
     models: {Inventory}
 } = require("../db")
 
-// matches GET requests to /api/products/
+// get all the inventory items 
 router.get('/', async (req, res, next) => {
 
     try {
@@ -14,6 +14,7 @@ router.get('/', async (req, res, next) => {
     }
 });
 
+// create a new Inventory item
 router.post('/', async (req, res, next) => {
     try {
      res.status(201).send(await Inventory.create({
@@ -24,6 +25,16 @@ router.post('/', async (req, res, next) => {
         imageURL: req.body.imageURL
      }))
     } catch (err){
+        next(err)
+    }
+})
+
+router.delete('/:id', async (req, res, next) => {
+    try {
+        const product = await Inventory.findByPk(req.params.id);
+        await product.destroy();
+        res.send(product)
+    } catch (err) {
         next(err)
     }
 })
