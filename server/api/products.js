@@ -39,4 +39,22 @@ router.delete('/:id', async (req, res, next) => {
     }
 })
 
+router.put('/:id', async (req, res, next) => {
+    try {
+        const product = await Inventory.findByPk(req.params.id);
+        res.send(
+            await product.update({
+                name: req.body.name,
+                quantity: req.body.quantity,
+                price: req.body.price,
+                description: req.body.description,
+                imageURL: req.body.imageURL
+            })
+        )
+    } catch (err) {
+        next(err)
+    }
+
+})
+
 module.exports = router;
