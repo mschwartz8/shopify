@@ -106,7 +106,7 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
   constructor() {
     super();
     this.state = {
-      products: []
+      products: ['hello']
     };
   }
 
@@ -133,13 +133,13 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
 
 
   render() {
-    console.log(this.state.products);
+    console.log(this.state.products, 'state now');
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       id: "main",
       className: "row container"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "container"
-    }, "\"hello\"", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, this.state.products[0].name)));
+    }, "\"hello\"", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, this.state.products[0])));
   }
 
 }

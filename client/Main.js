@@ -8,7 +8,7 @@ export default class Main extends React.Component {
   constructor () {
     super()
     this.state = {
-      products: []
+      products: ['hello']
     }
   }
 
@@ -36,12 +36,12 @@ export default class Main extends React.Component {
 
   render () {
     
-    console.log(this.state.products)
+    console.log(this.state.products, 'state now')
     return (
       <div id='main' className='row container'>
         <div className='container'>
           "hello"
-          <h2>{this.state.products[0].name}</h2>
+          <h2>{this.state.products[0]}</h2>
         </div>
       </div>
     )
