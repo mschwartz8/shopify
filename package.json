@@ -4,9 +4,11 @@
   "description": "",
   "main": "server/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server/index.js",
-    "seed": "node seed.js"
+   "start": "nodemon server/index.js",
+   "seed": "node seed.js",
+   "build": "webpack",
+   "build-watch": "webpack -w"
+    
   },
   "repository": {
     "type": "git",
@@ -24,9 +26,17 @@
     "morgan": "^1.10.0",
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "react-router-dom": "^6.3.0",
     "sequelize": "^6.19.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.16"
+    "@babel/core": "^7.11.4",
+    "@babel/preset-react": "^7.10.4",
+    "babel-loader": "^8.1.0",
+    "nodemon": "^2.0.15",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
   }
 }
