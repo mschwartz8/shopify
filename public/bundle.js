@@ -109,6 +109,7 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
       products: []
     };
     this.deleteProduct = this.deleteProduct.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   async componentDidMount() {
@@ -136,13 +137,29 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
         products: currentProducts.filter(product => product.id !== productId)
       });
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(`/api/products/${productId}`, this.state).then(response => {
-        if (response.status === 'error') {
+        if (response.status === "error") {
           this.setState({
             products: currentProducts
           });
-          return 'error';
+          return "error";
         } else {
-          return 'successfuly removed';
+          return "successfully removed";
+        }
+      });
+    };
+  }
+
+  createProduct(newProduct) {
+    return async () => {
+      const currentProducts = this.state.products;
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(`/api/products/}`, this.state, newProduct).then(response => {
+        if (response.status === "error") {
+          this.setState({
+            products: currentProducts
+          });
+          return "error";
+        } else {
+          return "successfully added";
         }
       });
     };
@@ -162,9 +179,30 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
           type: "button",
           className: "remove",
           onClick: this.deleteProduct(product.id)
-        }, "x delete product")))));
+        }, "x delete product"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          type: "button",
+          className: "edit" // onClick={this.editProduct(product.id)}
+
+        }, "* edit product")))));
       }
     }
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    const name = event.target.contentName.value;
+    const price = event.target.contentPrice.value;
+    const description = event.target.contentDescription.value;
+    const quantity = event.target.contentQuantity.value;
+    const imageURL = event.target.contentImage.value;
+    const newProduct = {
+      name,
+      price,
+      description,
+      quantity,
+      imageURL
+    };
+    return createProduct(newProduct);
   }
 
   render() {
@@ -173,7 +211,42 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
       className: "row container"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "container"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Products List: ", this.renderProducts(), " ")));
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Products List: ", this.renderProducts(), " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+      id: "new-product-form",
+      onSubmit: this.handleSubmit
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "input-product-form"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      className: "form-control",
+      type: "text",
+      name: "contentName",
+      placeholder: "New Product title..."
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      className: "form-control",
+      type: "text",
+      name: "contentPrice",
+      placeholder: "Price..."
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      className: "form-control",
+      type: "text",
+      name: "contentQuantity",
+      placeholder: "quantity..."
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      className: "form-control",
+      type: "text",
+      name: "contentDescription",
+      placeholder: "description..."
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      className: "form-control",
+      type: "text",
+      name: "contentImage",
+      placeholder: "image URL..."
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      className: "input-group-btn"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      className: "btn",
+      type: "submit"
+    }, "Submit!"))))));
   }
 
 }
