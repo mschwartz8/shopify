@@ -8,7 +8,7 @@ export default class Main extends React.Component {
   constructor () {
     super()
     this.state = {
-      products: ['hello']
+      products: []
     }
   }
 
@@ -17,6 +17,7 @@ export default class Main extends React.Component {
     this.setState({
       products: data
     })
+    console.log(this.state.products, 'state in component')
   }
 
 //   pickAlbum (albumId) {
@@ -34,14 +35,25 @@ export default class Main extends React.Component {
 //     })
 //   }
 
+renderProducts() {    
+  if (this.state.products) {
+    if (this.state.products.length === 0) {
+      return <div>'No products yet!'</div>;
+    } else {
+      return this.state.products.map((product) => (
+        <div className="product" key={product.id}>
+            <h3>{product.name}</h3>
+        </div>
+      ));
+    }
+  }
+}
+
   render () {
-    
-    console.log(this.state.products, 'state now')
-    return (
+        return (
       <div id='main' className='row container'>
         <div className='container'>
-          "hello"
-          <h2>{this.state.products[0]}</h2>
+        <h3>Products List: {this.renderProducts()} </h3>
         </div>
       </div>
     )

@@ -106,7 +106,7 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
   constructor() {
     super();
     this.state = {
-      products: ['hello']
+      products: []
     };
   }
 
@@ -117,6 +117,7 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
     this.setState({
       products: data
     });
+    console.log(this.state.products, 'state in component');
   } //   pickAlbum (albumId) {
   //     return async () => {
   //       const {data} = await axios.get(`/api/albums/${albumId}`)
@@ -132,14 +133,26 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
   //   }
 
 
+  renderProducts() {
+    if (this.state.products) {
+      if (this.state.products.length === 0) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "'No products yet!'");
+      } else {
+        return this.state.products.map(product => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "product",
+          key: product.id
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, product.name)));
+      }
+    }
+  }
+
   render() {
-    console.log(this.state.products, 'state now');
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       id: "main",
       className: "row container"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "container"
-    }, "\"hello\"", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, this.state.products[0])));
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Products List: ", this.renderProducts(), " ")));
   }
 
 }
