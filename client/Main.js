@@ -29,12 +29,29 @@ export default class Main extends React.Component {
 
     deleteProduct (productId) {
       return async () => {
-        const {data} = await axios.delete(`/api/products/${productId}`)
+        const currentProducts = this.state.products;
         this.setState({
-          products: data
+          products: currentProducts.filter(product => product.id !== productId)
         })
-      }
+        axios
+      .delete(`/api/products/${productId}`, this.state)
+      .then(response => {
+        if (response.status === 'error') {
+          this.setState({
+            products: currentProducts,
+          });
+
+          return 'error'
+        } else {
+
+          return 'successfuly removed'
+
+        }        
+      });
+  
     }
+  }
+    
 
   renderProducts() {
     if (this.state.products) {

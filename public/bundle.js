@@ -131,11 +131,19 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
 
   deleteProduct(productId) {
     return async () => {
-      const {
-        data
-      } = await axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(`/api/products/${productId}`);
+      const currentProducts = this.state.products;
       this.setState({
-        products: data
+        products: currentProducts.filter(product => product.id !== productId)
+      });
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(`/api/products/${productId}`, this.state).then(response => {
+        if (response.status === 'error') {
+          this.setState({
+            products: currentProducts
+          });
+          return 'error';
+        } else {
+          return 'successfuly removed';
+        }
       });
     };
   }
