@@ -5,8 +5,14 @@ const InventoryData = [
         name: "Yellow Duck",
         quantity: 10,
         price: 5.99 ,
-        description: "articulate your coding problem to your new favorite duck"
-    }
+        description: "articulate your coding problem to your new favorite yellow duck"
+    },
+    {
+      name: "Green Duck",
+      quantity: 10,
+      price: 8.99 ,
+      description: "articulate your coding problem to your new favorite green duck"
+  }
 ]
 
 async function seed() {

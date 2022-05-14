@@ -108,16 +108,17 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
     this.state = {
       products: []
     };
+    this.deleteProduct = this.deleteProduct.bind(this);
   }
 
   async componentDidMount() {
     const {
       data
-    } = await axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/products');
+    } = await axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/api/products");
     this.setState({
       products: data
     });
-    console.log(this.state.products, 'state in component');
+    console.log(this.state.products, "state in component");
   } //   pickAlbum (albumId) {
   //     return async () => {
   //       const {data} = await axios.get(`/api/albums/${albumId}`)
@@ -126,12 +127,18 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
   //       })
   //     }
   //   }
-  //   deselectAlbum () {
-  //     this.setState({
-  //       selectedAlbum: {}
-  //     })
-  //   }
 
+
+  deleteProduct(productId) {
+    return async () => {
+      const {
+        data
+      } = await axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(`/api/products/${productId}`);
+      this.setState({
+        products: data
+      });
+    };
+  }
 
   renderProducts() {
     if (this.state.products) {
@@ -141,7 +148,13 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
         return this.state.products.map(product => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "product",
           key: product.id
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, product.name)));
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, product.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, product.price, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+          src: product.imageUrl
+        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, product.description)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          type: "button",
+          className: "remove",
+          onClick: this.deleteProduct(product.id)
+        }, "x delete product")))));
       }
     }
   }
