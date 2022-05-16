@@ -110,9 +110,7 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
     };
     this.deleteProduct = this.deleteProduct.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleSubmitEdit = this.handleSubmitEdit.bind(this); // this.editProduct = this.editProduct.bind(this);
-
-    this.createProduct = this.createProduct.bind(this);
+    this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
   }
 
   async componentDidMount() {
@@ -138,22 +136,6 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
           return "error";
         } else {
           return "successfully removed";
-        }
-      });
-    };
-  }
-
-  createProduct(newProduct) {
-    return async () => {
-      const currentProducts = this.state.products;
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(`/api/products/}`, this.state, newProduct).then(response => {
-        if (response.status === "error") {
-          this.setState({
-            products: currentProducts
-          });
-          return "error";
-        } else {
-          return "successfully added";
         }
       });
     };

@@ -10,8 +10,6 @@ export default class Main extends React.Component {
     this.deleteProduct = this.deleteProduct.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this)
-    // this.editProduct = this.editProduct.bind(this);
-    this.createProduct = this.createProduct.bind(this)
   }
 
   async componentDidMount() {
@@ -42,24 +40,6 @@ export default class Main extends React.Component {
         });
     };
   }
-
-  createProduct(newProduct) {
-    return async () => {
-      const currentProducts = this.state.products;
-      axios.post(`/api/products/}`, this.state, newProduct).then((response) => {
-        if (response.status === "error") {
-          this.setState({
-            products: currentProducts,
-          });
-
-          return "error";
-        } else {
-          return "successfully added";
-        }
-      });
-    };
-  }
-
 
   renderProducts() {
     if (this.state.products) {
