@@ -142,6 +142,7 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
   }
 
   createProduct(newProduct) {
+    console.log('am i here');
     return async () => {
       const currentProducts = this.state.products;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(`/api/products/}`, this.state, newProduct).then(response => {
@@ -161,14 +162,14 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
     return async () => {
       const currentProducts = this.state.products;
       const id = newProduct.id;
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(`/api/products/$:productId}`, this.state, newProduct).then(response => {
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(`/api/products/${id}`, this.state, newProduct).then(response => {
         if (response.status === "error") {
           this.setState({
             products: currentProducts
           });
           return "error";
         } else {
-          return "successfully added";
+          return "successfully edited";
         }
       });
     };
@@ -192,14 +193,16 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
           id: "product-edit-form",
           onSubmit: this.handleSubmitEdit
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
-          htmlfor: "productId"
+          htmlFor: "productId"
         }, "Id:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
           type: "text",
           id: "productId",
           name: "productId",
           value: product.id,
-          readonly: true
-        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+          readOnly: true
+        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+          htmlFor: "productPrice"
+        }, "Product Name:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
           name: "productName"
         }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
           htmlFor: "productPrice"
@@ -226,7 +229,7 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const name = event.target.readOnly.value;
+    const name = event.target.contentName.value;
     const price = event.target.contentPrice.value;
     const description = event.target.contentDescription.value;
     const quantity = event.target.contentQuantity.value;
@@ -243,7 +246,6 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
 
   handleSubmitEdit(event) {
     event.preventDefault();
-    console.log(event.target, 'eventTarget');
     const id = event.target.productId.value;
     const name = event.target.productName.value;
     const price = event.target.productPrice.value;
@@ -258,7 +260,6 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
       quantity,
       imageURL
     };
-    console.log(newProduct, 'newProduct');
     this.editProduct(newProduct);
   }
 

@@ -63,7 +63,7 @@ export default class Main extends React.Component {
       const currentProducts = this.state.products;
       const id = newProduct.id;
       axios
-        .put(`/api/products/$:productId}`, this.state, newProduct)
+        .put(`/api/products/${id}`, this.state, newProduct)
         .then((response) => {
           if (response.status === "error") {
             this.setState({
@@ -72,7 +72,7 @@ export default class Main extends React.Component {
 
             return "error";
           } else {
-            return "successfully added";
+            return "successfully edited";
           }
         });
     };
@@ -107,8 +107,9 @@ export default class Main extends React.Component {
                       id='product-edit-form'
                       onSubmit={this.handleSubmitEdit}
                     >
-                      <label htmlfor="productId">Id:</label>
-                      <input type="text" id="productId" name="productId" value={product.id} readonly /><br></br>
+                      <label htmlFor="productId">Id:</label>
+                      <input type="text" id="productId" name="productId" value={product.id} readOnly /><br></br>
+                      <label htmlFor='productPrice'>Product Name:</label>
                       <input name='productName' />
                       <label htmlFor='productPrice'>Product Price:</label>
                       <input name='productPrice' />
@@ -138,8 +139,9 @@ export default class Main extends React.Component {
   }
 
   handleSubmit(event) {
+    
     event.preventDefault();
-    const name = event.target.readOnly.value;
+    const name = event.target.contentName.value;
     const price = event.target.contentPrice.value;
     const description = event.target.contentDescription.value;
     const quantity = event.target.contentQuantity.value;
@@ -156,7 +158,6 @@ export default class Main extends React.Component {
 
   handleSubmitEdit(event) {
     event.preventDefault();
-    console.log(event.target, 'eventTarget')
     const id = event.target.productId.value;
     const name = event.target.productName.value;
     const price = event.target.productPrice.value;
@@ -171,7 +172,6 @@ export default class Main extends React.Component {
       quantity,
       imageURL,
     };
-    console.log(newProduct, 'newProduct')
     this.editProduct(newProduct);
   }
 
