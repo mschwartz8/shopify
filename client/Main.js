@@ -8,7 +8,7 @@ export default class Main extends React.Component {
       products: [],
     };
     this.deleteProduct = this.deleteProduct.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   async componentDidMount() {
@@ -18,15 +18,6 @@ export default class Main extends React.Component {
     });
     console.log(this.state.products, "state in component");
   }
-
-  //   pickAlbum (albumId) {
-  //     return async () => {
-  //       const {data} = await axios.get(`/api/albums/${albumId}`)
-  //       this.setState({
-  //         selectedAlbum: data
-  //       })
-  //     }
-  //   }
 
   deleteProduct(productId) {
     return async () => {
@@ -67,6 +58,26 @@ export default class Main extends React.Component {
     };
   }
 
+  editProduct(newProduct) {
+    return async () => {
+      const currentProducts = this.state.products;
+      const id = newProduct.id;
+      axios
+        .put(`/api/products/$:productId}`, this.state, newProduct)
+        .then((response) => {
+          if (response.status === "error") {
+            this.setState({
+              products: currentProducts,
+            });
+
+            return "error";
+          } else {
+            return "successfully added";
+          }
+        });
+    };
+  }
+
   renderProducts() {
     if (this.state.products) {
       if (this.state.products.length === 0) {
@@ -89,13 +100,35 @@ export default class Main extends React.Component {
                 >
                   x delete product
                 </button>
-                <button
-                  type='button'
-                  className='edit'
-                  // onClick={this.editProduct(product.id)}
-                >
-                  * edit product
-                </button>
+                <div>
+                  * Edit Product
+                  <div>
+                    <form
+                      id='product-edit-form'
+                      onSubmit={this.handleSubmitEdit}
+                    >
+                      <label htmlfor="productId">Id:</label>
+                      <input type="text" id="productId" name="productId" value={product.id} readonly /><br></br>
+                      <input name='productName' />
+                      <label htmlFor='productPrice'>Product Price:</label>
+                      <input name='productPrice' />
+                      <label htmlFor='productDescription'>
+                        Product Description:{" "}
+                      </label>
+                      <input name='productDescription' />
+                      <label htmlFor='productQuantity'>
+                        Product Quantity:{" "}
+                      </label>
+                      <input name='productQuantity' />
+                      <label htmlFor='productImageURL'>
+                        Product Image URL:{" "}
+                      </label>
+                      <input name='productImageURL' />
+
+                      <button type='submit'> Submit Edit</button>
+                    </form>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -106,7 +139,7 @@ export default class Main extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const name = event.target.contentName.value;
+    const name = event.target.readOnly.value;
     const price = event.target.contentPrice.value;
     const description = event.target.contentDescription.value;
     const quantity = event.target.contentQuantity.value;
@@ -117,8 +150,29 @@ export default class Main extends React.Component {
       description,
       quantity,
       imageURL,
-    }
-    return createProduct(newProduct);
+    };
+    this.createProduct(newProduct);
+  }
+
+  handleSubmitEdit(event) {
+    event.preventDefault();
+    console.log(event.target, 'eventTarget')
+    const id = event.target.productId.value;
+    const name = event.target.productName.value;
+    const price = event.target.productPrice.value;
+    const description = event.target.productDescription.value;
+    const quantity = event.target.productQuantity.value;
+    const imageURL = event.target.productImageURL.value;
+    const newProduct = {
+      id,
+      name,
+      price,
+      description,
+      quantity,
+      imageURL,
+    };
+    console.log(newProduct, 'newProduct')
+    this.editProduct(newProduct);
   }
 
   render() {
@@ -126,6 +180,10 @@ export default class Main extends React.Component {
       <div id='main' className='row container'>
         <div className='container'>
           <h3>Products List: {this.renderProducts()} </h3>
+          <div>
+            ----------------------------------------------------------------
+          </div>
+          <h2> ADD NEW PRODUCT </h2>
           <form id='new-product-form' onSubmit={this.handleSubmit}>
             <div className='input-product-form'>
               <input

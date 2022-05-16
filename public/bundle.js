@@ -120,15 +120,7 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
       products: data
     });
     console.log(this.state.products, "state in component");
-  } //   pickAlbum (albumId) {
-  //     return async () => {
-  //       const {data} = await axios.get(`/api/albums/${albumId}`)
-  //       this.setState({
-  //         selectedAlbum: data
-  //       })
-  //     }
-  //   }
-
+  }
 
   deleteProduct(productId) {
     return async () => {
@@ -165,6 +157,23 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
     };
   }
 
+  editProduct(newProduct) {
+    return async () => {
+      const currentProducts = this.state.products;
+      const id = newProduct.id;
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(`/api/products/$:productId}`, this.state, newProduct).then(response => {
+        if (response.status === "error") {
+          this.setState({
+            products: currentProducts
+          });
+          return "error";
+        } else {
+          return "successfully added";
+        }
+      });
+    };
+  }
+
   renderProducts() {
     if (this.state.products) {
       if (this.state.products.length === 0) {
@@ -179,18 +188,45 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
           type: "button",
           className: "remove",
           onClick: this.deleteProduct(product.id)
-        }, "x delete product"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-          type: "button",
-          className: "edit" // onClick={this.editProduct(product.id)}
-
-        }, "* edit product")))));
+        }, "x delete product"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "* Edit Product", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+          id: "product-edit-form",
+          onSubmit: this.handleSubmitEdit
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+          htmlfor: "productId"
+        }, "Id:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+          type: "text",
+          id: "productId",
+          name: "productId",
+          value: product.id,
+          readonly: true
+        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+          name: "productName"
+        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+          htmlFor: "productPrice"
+        }, "Product Price:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+          name: "productPrice"
+        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+          htmlFor: "productDescription"
+        }, "Product Description:", " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+          name: "productDescription"
+        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+          htmlFor: "productQuantity"
+        }, "Product Quantity:", " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+          name: "productQuantity"
+        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+          htmlFor: "productImageURL"
+        }, "Product Image URL:", " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+          name: "productImageURL"
+        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          type: "submit"
+        }, " Submit Edit"))))))));
       }
     }
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    const name = event.target.contentName.value;
+    const name = event.target.readOnly.value;
     const price = event.target.contentPrice.value;
     const description = event.target.contentDescription.value;
     const quantity = event.target.contentQuantity.value;
@@ -202,7 +238,28 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
       quantity,
       imageURL
     };
-    return createProduct(newProduct);
+    this.createProduct(newProduct);
+  }
+
+  handleSubmitEdit(event) {
+    event.preventDefault();
+    console.log(event.target, 'eventTarget');
+    const id = event.target.productId.value;
+    const name = event.target.productName.value;
+    const price = event.target.productPrice.value;
+    const description = event.target.productDescription.value;
+    const quantity = event.target.productQuantity.value;
+    const imageURL = event.target.productImageURL.value;
+    const newProduct = {
+      id,
+      name,
+      price,
+      description,
+      quantity,
+      imageURL
+    };
+    console.log(newProduct, 'newProduct');
+    this.editProduct(newProduct);
   }
 
   render() {
@@ -211,7 +268,7 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
       className: "row container"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "container"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Products List: ", this.renderProducts(), " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Products List: ", this.renderProducts(), " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "----------------------------------------------------------------"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, " ADD NEW PRODUCT "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
       id: "new-product-form",
       onSubmit: this.handleSubmit
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
