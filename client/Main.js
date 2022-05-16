@@ -61,44 +61,6 @@ export default class Main extends React.Component {
   }
 
 
-//  async editProduct(newProduct) {
-//     const id = newProduct.id;
-//     const updatedProduct = await axios.put(`/api/products/${id}`, newProduct);
-    
-//     try {
-//       if (!updatedProduct){
-//         var newProduct= this.state.products.concat([updatedProduct]);  
-//         this.setState({products: newProduct}, 
-//         console.log(this.state.products));
-      
-//       }
-//     } catch (error){
-//       this.setState({ errorMessage: error.message });
-//       console.error('There was an error!', error);
-//     }       
-//   }
-  
-  // editProduct(newProduct) {
-  //   return async () => {
-  //     console.log('in here')
-  //     const currentProducts = this.state.products;
-  //     const id = newProduct.id;
-  //     axios
-  //       .put(`/api/products/${id}`, newProduct)
-  //       .then((response) => {
-  //         if (response.status === "error") {
-  //           this.setState({
-  //             products: currentProducts,
-  //           });
-
-  //           return "error";
-  //         } else {
-  //           return "successfully edited";
-  //         }
-  //       });
-  //   };
-  // }
-
   renderProducts() {
     if (this.state.products) {
       if (this.state.products.length === 0) {
@@ -159,8 +121,8 @@ export default class Main extends React.Component {
     }
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
+  async handleSubmit(event) {
+    
     const name = event.target.contentName.value;
     const price = event.target.contentPrice.value;
     const description = event.target.contentDescription.value;
@@ -173,7 +135,21 @@ export default class Main extends React.Component {
       quantity,
       imageURL,
     };
-    this.createProduct(newProduct);
+    const updatedProduct = await axios.post(`/api/products`, newProduct);
+    
+    try {
+      if (!updatedProduct){
+        var newProducts= this.state.products.concat([updatedProduct]);  
+        this.setState({products: newProducts}, 
+        console.log(this.state.products));
+      
+      }
+    } catch (error){
+      this.setState({ errorMessage: error.message });
+      console.error('There was an error!', error);
+    }  
+
+    event.preventDefault();
   }
 
   async handleSubmitEdit(event) {
@@ -191,7 +167,6 @@ export default class Main extends React.Component {
       quantity,
       imageURL,
     };
-    // this.editProduct(newProduct);
     const updatedProduct = await axios.put(`/api/products/${id}`, newProduct);
     
     try {
