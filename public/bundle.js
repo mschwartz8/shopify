@@ -110,8 +110,8 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
     };
     this.deleteProduct = this.deleteProduct.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
-    this.editProduct = this.editProduct.bind(this);
+    this.handleSubmitEdit = this.handleSubmitEdit.bind(this); // this.editProduct = this.editProduct.bind(this);
+
     this.createProduct = this.createProduct.bind(this);
   }
 
@@ -157,19 +157,21 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
         }
       });
     };
-  }
-
-  async editProduct(newProduct) {
-    const id = newProduct.id;
-    axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(`/api/products/${id}`, newProduct).then(response => this.setState({
-      updatedAt: response.data.updatedAt
-    })).catch(error => {
-      this.setState({
-        errorMessage: error.message
-      });
-      console.error('There was an error!', error);
-    });
-  } // editProduct(newProduct) {
+  } //  async editProduct(newProduct) {
+  //     const id = newProduct.id;
+  //     const updatedProduct = await axios.put(`/api/products/${id}`, newProduct);
+  //     try {
+  //       if (!updatedProduct){
+  //         var newProduct= this.state.products.concat([updatedProduct]);  
+  //         this.setState({products: newProduct}, 
+  //         console.log(this.state.products));
+  //       }
+  //     } catch (error){
+  //       this.setState({ errorMessage: error.message });
+  //       console.error('There was an error!', error);
+  //     }       
+  //   }
+  // editProduct(newProduct) {
   //   return async () => {
   //     console.log('in here')
   //     const currentProducts = this.state.products;
@@ -259,8 +261,7 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
     this.createProduct(newProduct);
   }
 
-  handleSubmitEdit(event) {
-    event.preventDefault();
+  async handleSubmitEdit(event) {
     const id = event.target.productId.value;
     const name = event.target.productName.value;
     const price = event.target.productPrice.value;
@@ -274,9 +275,25 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
       description,
       quantity,
       imageURL
-    };
-    console.log(newProduct, 'new prod');
-    this.editProduct(newProduct);
+    }; // this.editProduct(newProduct);
+
+    const updatedProduct = await axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(`/api/products/${id}`, newProduct);
+
+    try {
+      if (!updatedProduct) {
+        var newProducts = this.state.products.concat([updatedProduct]);
+        this.setState({
+          products: newProducts
+        }, console.log(this.state.products));
+      }
+    } catch (error) {
+      this.setState({
+        errorMessage: error.message
+      });
+      console.error('There was an error!', error);
+    }
+
+    event.preventDefault();
   }
 
   render() {

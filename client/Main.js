@@ -10,7 +10,7 @@ export default class Main extends React.Component {
     this.deleteProduct = this.deleteProduct.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this)
-    this.editProduct = this.editProduct.bind(this);
+    // this.editProduct = this.editProduct.bind(this);
     this.createProduct = this.createProduct.bind(this)
   }
 
@@ -60,16 +60,23 @@ export default class Main extends React.Component {
     };
   }
 
- async editProduct(newProduct) {
-  
-      const id = newProduct.id;
-      axios.put(`/api/products/${id}`, newProduct)
-        .then(response => this.setState({ updatedAt: response.data.updatedAt }))
-        .catch(error => {
-            this.setState({ errorMessage: error.message });
-            console.error('There was an error!', error);
-        });
-  }
+
+//  async editProduct(newProduct) {
+//     const id = newProduct.id;
+//     const updatedProduct = await axios.put(`/api/products/${id}`, newProduct);
+    
+//     try {
+//       if (!updatedProduct){
+//         var newProduct= this.state.products.concat([updatedProduct]);  
+//         this.setState({products: newProduct}, 
+//         console.log(this.state.products));
+      
+//       }
+//     } catch (error){
+//       this.setState({ errorMessage: error.message });
+//       console.error('There was an error!', error);
+//     }       
+//   }
   
   // editProduct(newProduct) {
   //   return async () => {
@@ -169,8 +176,7 @@ export default class Main extends React.Component {
     this.createProduct(newProduct);
   }
 
-  handleSubmitEdit(event) {
-    event.preventDefault();
+  async handleSubmitEdit(event) {
     const id = event.target.productId.value;
     const name = event.target.productName.value;
     const price = event.target.productPrice.value;
@@ -185,8 +191,23 @@ export default class Main extends React.Component {
       quantity,
       imageURL,
     };
-    console.log(newProduct, 'new prod')
-    this.editProduct(newProduct);
+    // this.editProduct(newProduct);
+    const updatedProduct = await axios.put(`/api/products/${id}`, newProduct);
+    
+    try {
+      if (!updatedProduct){
+        var newProducts= this.state.products.concat([updatedProduct]);  
+        this.setState({products: newProducts}, 
+        console.log(this.state.products));
+      
+      }
+    } catch (error){
+      this.setState({ errorMessage: error.message });
+      console.error('There was an error!', error);
+    }  
+    
+    event.preventDefault();
+
   }
 
   render() {
