@@ -9,6 +9,9 @@ export default class Main extends React.Component {
     };
     this.deleteProduct = this.deleteProduct.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmitEdit = this.handleSubmitEdit.bind(this)
+    this.editProduct = this.editProduct.bind(this);
+    this.createProduct = this.createProduct.bind(this)
   }
 
   async componentDidMount() {
@@ -16,7 +19,6 @@ export default class Main extends React.Component {
     this.setState({
       products: data,
     });
-    console.log(this.state.products, "state in component");
   }
 
   deleteProduct(productId) {
@@ -58,25 +60,37 @@ export default class Main extends React.Component {
     };
   }
 
-  editProduct(newProduct) {
-    return async () => {
-      const currentProducts = this.state.products;
+ async editProduct(newProduct) {
+  
       const id = newProduct.id;
-      axios
-        .put(`/api/products/${id}`, this.state, newProduct)
-        .then((response) => {
-          if (response.status === "error") {
-            this.setState({
-              products: currentProducts,
-            });
-
-            return "error";
-          } else {
-            return "successfully edited";
-          }
+      axios.put(`/api/products/${id}`, newProduct)
+        .then(response => this.setState({ updatedAt: response.data.updatedAt }))
+        .catch(error => {
+            this.setState({ errorMessage: error.message });
+            console.error('There was an error!', error);
         });
-    };
   }
+  
+  // editProduct(newProduct) {
+  //   return async () => {
+  //     console.log('in here')
+  //     const currentProducts = this.state.products;
+  //     const id = newProduct.id;
+  //     axios
+  //       .put(`/api/products/${id}`, newProduct)
+  //       .then((response) => {
+  //         if (response.status === "error") {
+  //           this.setState({
+  //             products: currentProducts,
+  //           });
+
+  //           return "error";
+  //         } else {
+  //           return "successfully edited";
+  //         }
+  //       });
+  //   };
+  // }
 
   renderProducts() {
     if (this.state.products) {
@@ -139,7 +153,6 @@ export default class Main extends React.Component {
   }
 
   handleSubmit(event) {
-    
     event.preventDefault();
     const name = event.target.contentName.value;
     const price = event.target.contentPrice.value;
@@ -172,6 +185,7 @@ export default class Main extends React.Component {
       quantity,
       imageURL,
     };
+    console.log(newProduct, 'new prod')
     this.editProduct(newProduct);
   }
 

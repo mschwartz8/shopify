@@ -110,6 +110,9 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
     };
     this.deleteProduct = this.deleteProduct.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
+    this.editProduct = this.editProduct.bind(this);
+    this.createProduct = this.createProduct.bind(this);
   }
 
   async componentDidMount() {
@@ -119,7 +122,6 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
     this.setState({
       products: data
     });
-    console.log(this.state.products, "state in component");
   }
 
   deleteProduct(productId) {
@@ -142,7 +144,6 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
   }
 
   createProduct(newProduct) {
-    console.log('am i here');
     return async () => {
       const currentProducts = this.state.products;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(`/api/products/}`, this.state, newProduct).then(response => {
@@ -158,22 +159,36 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
     };
   }
 
-  editProduct(newProduct) {
-    return async () => {
-      const currentProducts = this.state.products;
-      const id = newProduct.id;
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(`/api/products/${id}`, this.state, newProduct).then(response => {
-        if (response.status === "error") {
-          this.setState({
-            products: currentProducts
-          });
-          return "error";
-        } else {
-          return "successfully edited";
-        }
+  async editProduct(newProduct) {
+    const id = newProduct.id;
+    axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(`/api/products/${id}`, newProduct).then(response => this.setState({
+      updatedAt: response.data.updatedAt
+    })).catch(error => {
+      this.setState({
+        errorMessage: error.message
       });
-    };
-  }
+      console.error('There was an error!', error);
+    });
+  } // editProduct(newProduct) {
+  //   return async () => {
+  //     console.log('in here')
+  //     const currentProducts = this.state.products;
+  //     const id = newProduct.id;
+  //     axios
+  //       .put(`/api/products/${id}`, newProduct)
+  //       .then((response) => {
+  //         if (response.status === "error") {
+  //           this.setState({
+  //             products: currentProducts,
+  //           });
+  //           return "error";
+  //         } else {
+  //           return "successfully edited";
+  //         }
+  //       });
+  //   };
+  // }
+
 
   renderProducts() {
     if (this.state.products) {
@@ -260,6 +275,7 @@ class Main extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
       quantity,
       imageURL
     };
+    console.log(newProduct, 'new prod');
     this.editProduct(newProduct);
   }
 
