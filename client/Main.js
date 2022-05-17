@@ -10,6 +10,7 @@ export default class Main extends React.Component {
     this.deleteProduct = this.deleteProduct.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this)
+    this.handleSubmitWarehouse = this.handleSubmitWarehouse.bind(this)
   }
 
   async componentDidMount() {
@@ -165,6 +166,24 @@ export default class Main extends React.Component {
 
   }
 
+  async handleSubmitWarehouse (event) {
+    const location = event.target.contentLocation.value;
+    const newWarehouse = await axios.post(`/api/warehouse`, {location});
+    try {
+      if (!newWarehouse){
+        this.setState({}, 
+        console.log(this.state.products));
+      
+      }
+    } catch (error){
+      this.setState({ errorMessage: error.message });
+      console.error('There was an error!', error);
+    } 
+
+    event.preventDefault();
+
+  }
+
   render() {
     return (
       <div id='main' className='row container'>
@@ -173,6 +192,22 @@ export default class Main extends React.Component {
           <div>
             ----------------------------------------------------------------
           </div>
+          <h2> ADD NEW WAREHOUSE</h2>
+          <form id='new-warehouse-form' onSubmit={this.handleSubmitWarehouse}>
+            <div className='input-warehouse-form'>
+              <input
+                className='form-control-wh'
+                type='text'
+                name='contentLocation'
+                placeholder='New Warehouse location...    '
+              />
+              <span className='input-group-btn-wh'>
+                <button className='button' type='submit'>
+                  Submit!
+                </button>
+              </span>
+            </div>
+          </form>
           <h2> ADD NEW PRODUCT </h2>
           <form id='new-product-form' onSubmit={this.handleSubmit}>
             <div className='input-product-form'>
