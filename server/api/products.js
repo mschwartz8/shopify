@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const {
-    models: {Inventory}
+    models: {Inventory, Warehouse}
 } = require("../db")
 
 // get all the inventory items 
@@ -56,5 +56,26 @@ router.put('/:id', async (req, res, next) => {
     }
 
 })
+
+// if on the front end you end up doing a drop down with warehouse options
+// once you choose one of those, it will assign it by updating the foreign key warehouseId
+// it will find the warehouse by name & then add warehouseId
+// router.put('/:id/assignWarehouse', async (req, res, next) => {
+//     try {
+//         const product = await Inventory.findByPk(req.params.id);
+//         const warehouse = await Warehouse.findOne({where: {
+//             location: req.body.location}
+//         })
+//         res.send(
+//             await product.update({
+//                 location: warehouse.id
+//             })
+//         )
+//     } catch (err) {
+//         next(err)
+//     }
+
+// })
+
 
 module.exports = router;

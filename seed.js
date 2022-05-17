@@ -1,18 +1,28 @@
-const {db, models: {Inventory}} = require("./server/db");
+const {db, models: {Inventory, Warehouse}} = require("./server/db");
 
-const InventoryData = [
+const WarehouseData = [
     {
-        name: "Yellow Duck",
-        quantity: 10,
-        price: 5.99 ,
-        description: "articulate your coding problem to your new favorite yellow duck"
+        location: "New Jersey",
+       
     },
     {
-      name: "Green Duck",
+      location: "South Carolina",
+  },
+]
+
+const InventoryData = [
+  {
+      name: "Yellow Duck",
       quantity: 10,
-      price: 8.99 ,
-      description: "articulate your coding problem to your new favorite green duck"
-  }
+      price: 5.99 ,
+      description: "articulate your coding problem to your new favorite yellow duck"
+  },
+  {
+    name: "Green Duck",
+    quantity: 10,
+    price: 8.99 ,
+    description: "articulate your coding problem to your new favorite green duck"
+}
 ]
 
 async function seed() {
@@ -24,6 +34,13 @@ async function seed() {
       InventoryData.map((product) => {
         return Inventory.create(product);
       }))
+    // Creating Warehouses
+    const warehouses = await Promise.all(
+        WarehouseData.map((warehouse) => {
+          return Warehouse.create(warehouse);
+        }))
+
+
   
     console.log(`seeded successfully`);
   
