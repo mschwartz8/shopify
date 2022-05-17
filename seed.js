@@ -29,14 +29,13 @@ const InventoryData = [
   },
 ];
 
-const ProductData = [{productQuantity: 3}, {productQuantity: 4}, {productQuantity: 2}];
 
 
 async function seed() {
   await db.sync({ force: true });
   console.log("db synced!");
 
-  // Creating Products
+  // Creating Inventory
   const inventory = await Promise.all(
     InventoryData.map((inventory) => {
       return Inventory.create(inventory);
@@ -49,18 +48,18 @@ async function seed() {
     })
   );
 
-    // Creating Warehouses
-    const products = await Promise.all(
-      ProductData.map((product) => {
-        return Products.create(product);
-      })
-    );
+    // x Creating Products x 
+    // const products = await Promise.all(
+    //   ProductData.map((product) => {
+    //     return Products.create(product);
+    //   })
+    // );
  
   // warehouses can have many inventorys
-  await warehouses[0].addInventory([
-    inventory[0],
-    inventory[1],
-  ]);
+  // await warehouses[0].addInventory([
+  //   inventory[0],
+  //   inventory[1],
+  // ]);
 
   // inventory can have many warehouses
   await inventory[0].addWarehouses([
@@ -68,11 +67,11 @@ async function seed() {
     warehouses[1],
   ]);
 
-  // Creating Products Through table items 
+ //Creating Products Through table items 
   // const products = await Promise.all([
   //   Products.create({productQuantity: 3}),
   //   Products.create({productQuantity: 4}),
-  // ])
+  // ]) 
 
 
 
